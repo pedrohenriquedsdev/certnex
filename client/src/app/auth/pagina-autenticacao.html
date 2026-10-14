@@ -1,0 +1,71 @@
+<div class="flex min-h-screen bg-slate-50">
+  <div
+    class="relative hidden overflow-hidden bg-slate-950 lg:flex lg:w-1/2 lg:flex-col lg:justify-between lg:p-12"
+  >
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-violet-600/30 blur-3xl"
+    ></div>
+    <div
+      class="pointer-events-none absolute -right-10 -bottom-32 h-96 w-96 rounded-full bg-cyan-500/20 blur-3xl"
+    ></div>
+    <div
+      class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:42px_42px]"
+    ></div>
+
+    <div class="relative z-10 flex items-center gap-2.5">
+      <div
+        class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 text-sm font-bold text-slate-950"
+      >
+        cn
+      </div>
+      <span class="text-lg font-semibold tracking-tight text-white">certnex</span>
+    </div>
+
+    <div class="relative z-10 max-w-sm">
+      <h2 class="text-3xl font-semibold leading-tight text-white">
+        Certificados prontos em minutos, não em horas.
+      </h2>
+      <p class="mt-4 text-slate-400">
+        Cadastre seus alunos, dispare o processamento e acompanhe tudo em tempo real.
+      </p>
+
+      <ul class="mt-8 space-y-3 text-sm text-slate-300">
+        <li class="flex items-center gap-2.5">
+          <svg class="h-4 w-4 flex-none text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Geração em lote com fila assíncrona
+        </li>
+        <li class="flex items-center gap-2.5">
+          <svg class="h-4 w-4 flex-none text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Download em PDF e ZIP
+        </li>
+        <li class="flex items-center gap-2.5">
+          <svg class="h-4 w-4 flex-none text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Acompanhamento de status em tempo real
+        </li>
+      </ul>
+    </div>
+
+    <p class="relative z-10 text-sm text-slate-500">&copy; 2026 certnex. Todos os direitos reservados.</p>
+  </div>
+
+  <div class="flex w-full flex-col items-center justify-center gap-6 px-6 py-12 sm:p-10 lg:w-1/2">
+    <div class="flex items-center gap-2.5 lg:hidden">
+      <div
+        class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 text-sm font-bold text-slate-950"
+      >
+        cn
+      </div>
+      <span class="text-lg font-semibold tracking-tight text-slate-900">certnex</span>
+    </div>
+
+    <div class="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/60">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
