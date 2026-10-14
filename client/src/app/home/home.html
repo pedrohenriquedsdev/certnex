@@ -1,1 +1,208 @@
-<p>home works!</p>
+<div class="min-h-screen bg-white">
+  <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-sm">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 text-sm font-bold text-slate-950"
+        >
+          cn
+        </div>
+        <span class="text-lg font-semibold tracking-tight text-slate-900">certnex</span>
+      </div>
+
+      <div class="hidden items-center gap-8 md:flex">
+        <a href="#recursos" class="text-sm font-medium text-slate-600 hover:text-slate-900">Recursos</a>
+        <a href="#como-funciona" class="text-sm font-medium text-slate-600 hover:text-slate-900">
+          Como funciona
+        </a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a routerLink="/login" class="text-sm font-medium text-slate-600 hover:text-slate-900">Entrar</a>
+        <a
+          routerLink="/cadastro"
+          class="rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md hover:brightness-110"
+        >
+          Começar agora
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute -top-32 left-1/2 h-96 w-[48rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-200 to-cyan-200 opacity-60 blur-3xl"
+    ></div>
+
+    <div class="relative mx-auto max-w-4xl px-6 py-24 text-center sm:py-32">
+      <span
+        class="inline-flex items-center rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-medium text-violet-700"
+      >
+        Geração automática de certificados
+      </span>
+
+      <h1 class="mt-6 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+        Certificados prontos em minutos,
+        <span class="bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+          não em horas</span
+        >.
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
+        Cadastre seus alunos, dispare a geração em lote e acompanhe cada certificado sendo
+        processado em tempo real — sem retrabalho manual.
+      </p>
+
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          routerLink="/cadastro"
+          class="w-full rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110 sm:w-auto"
+        >
+          Criar conta gratuita
+        </a>
+        <a
+          routerLink="/login"
+          class="w-full rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:w-auto"
+        >
+          Já tenho conta
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="recursos" class="mx-auto max-w-6xl px-6 py-20">
+    <div class="text-center">
+      <h2 class="text-3xl font-semibold tracking-tight text-slate-900">
+        Tudo que você precisa para emitir certificados
+      </h2>
+      <p class="mt-3 text-slate-600">Da fila de processamento ao download, sem complicação.</p>
+    </div>
+
+    <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="rounded-2xl border border-slate-200 p-6">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-slate-900">Geração em lote</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Envie a lista de alunos de uma vez e deixe o processamento assíncrono cuidar do resto.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 p-6">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-100 text-cyan-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-slate-900">PDF e ZIP prontos</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Baixe cada certificado individualmente ou todos de uma vez, compactados em um único
+          arquivo.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 p-6">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-slate-900">Status em tempo real</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Acompanhe quantos certificados já foram gerados, falharam ou estão pendentes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="bg-slate-50 py-20">
+    <div class="mx-auto max-w-5xl px-6">
+      <div class="text-center">
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-900">Como funciona</h2>
+        <p class="mt-3 text-slate-600">
+          Três passos entre a lista de alunos e os certificados prontos.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-10 sm:grid-cols-3">
+        <div class="text-center">
+          <div
+            class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-cyan-500 text-sm font-semibold text-white"
+          >
+            1
+          </div>
+          <h3 class="mt-4 font-semibold text-slate-900">Cadastre o curso</h3>
+          <p class="mt-2 text-sm text-slate-600">
+            Informe o nome do curso e a lista de alunos participantes.
+          </p>
+        </div>
+        <div class="text-center">
+          <div
+            class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-cyan-500 text-sm font-semibold text-white"
+          >
+            2
+          </div>
+          <h3 class="mt-4 font-semibold text-slate-900">Dispare a geração</h3>
+          <p class="mt-2 text-sm text-slate-600">
+            O processamento roda em segundo plano, sem travar sua navegação.
+          </p>
+        </div>
+        <div class="text-center">
+          <div
+            class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-cyan-500 text-sm font-semibold text-white"
+          >
+            3
+          </div>
+          <h3 class="mt-4 font-semibold text-slate-900">Baixe os certificados</h3>
+          <p class="mt-2 text-sm text-slate-600">
+            Acompanhe o status e baixe tudo em PDF ou em um único ZIP.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-20 text-center">
+    <h2 class="text-3xl font-semibold tracking-tight text-slate-900">
+      Pronto para automatizar seus certificados?
+    </h2>
+    <p class="mt-3 text-slate-600">
+      Crie sua conta gratuita e gere seu primeiro lote em poucos minutos.
+    </p>
+    <a
+      routerLink="/cadastro"
+      class="mt-8 inline-flex rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110"
+    >
+      Criar conta gratuita
+    </a>
+  </section>
+
+  <footer class="border-t border-slate-200 py-10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 text-xs font-bold text-slate-950"
+        >
+          cn
+        </div>
+        <span class="text-sm font-semibold text-slate-900">certnex</span>
+      </div>
+      <p class="text-sm text-slate-500">&copy; 2026 certnex. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</div>

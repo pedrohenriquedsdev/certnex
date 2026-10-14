@@ -5,6 +5,6 @@ import { Component } from "@angular/core";
   selector: 'app-pagina-autenticacao',
   templateUrl: './pagina-autenticacao.html'
 })
-export class PaginAutenticacao {
+export class PaginaAutenticacao {
 
 }
