@@ -13,3 +13,14 @@ export interface UsuarioDto {
 export interface CadastroConcluidoNavigationState {
   readonly emailCadastrado?: string;
 }
+
+export interface LoginRequest {
+  readonly email: string;
+  readonly senha: string;
+}
+
+export interface TokenDto {
+  readonly usuarioId: string;
+  readonly acessToken: string;
+  readonly dataExpiracaoEmUtc: string;
+}

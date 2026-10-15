@@ -1,9 +1,10 @@
 import { afterNextRender, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
-import { email, form, FormField, minLength, required } from '@angular/forms/signals';
+import { email, form, FormField, FormRoot, minLength, required } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 
-import { CadastroConcluidoNavigationState } from '../auth.models';
+import { CadastroConcluidoNavigationState, LoginRequest } from '../auth.models';
 import { PaginaAutenticacao } from '../pagina-autenticacao';
+import { AuthService } from '../auth.service';
 
 interface LoginFormModel {
   readonly email: string;
@@ -11,11 +12,12 @@ interface LoginFormModel {
 }
 
 @Component({
-  imports: [FormField, PaginaAutenticacao, RouterLink],
+  imports: [FormField, FormRoot, PaginaAutenticacao, RouterLink],
   selector: 'app-login',
   templateUrl: './login.html',
 })
 export class Login {
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   private readonly tituloPagina = viewChild<ElementRef<HTMLHeadingElement>>('tituloPagina');
@@ -41,4 +43,26 @@ export class Login {
       }));
     }
   }
+
+  protected enviarFormulario(event: SubmitEvent): void {
+      event.preventDefault();
+
+      const formulario = this.formularioLogin();
+
+      if (formulario.invalid()) {
+        formulario.markAsTouched();
+        return;
+      }
+
+      const modelo = this.modeloLogin();
+
+    const requisicao: LoginRequest = {
+      email: modelo.email,
+      senha: modelo.senha,
+    };
+
+      this.authService.login(requisicao).subscribe(() => {
+        void this.router.navigateByUrl('/');
+      });
+    }
 }

@@ -67,7 +67,7 @@ export class Cadastro {
     afterNextRender(() => this.tituloPagina()?.nativeElement.focus());
   }
 
-  enviarFormulario(event: SubmitEvent): void {
+  protected enviarFormulario(event: SubmitEvent): void {
     event.preventDefault();
 
     // Metadados de validação

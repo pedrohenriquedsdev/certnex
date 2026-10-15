@@ -2,7 +2,7 @@ import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Service, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { CadastroRequest, UsuarioDto,} from './auth.models';
+import { CadastroRequest, LoginRequest, TokenDto, UsuarioDto,} from './auth.models';
 import { URL_API } from './auth.tokens';
 
 @Service()
@@ -13,5 +13,9 @@ export class AuthService {
 
   cadastrar(req: CadastroRequest): Observable<UsuarioDto> {
     return this.http.post<UsuarioDto>(`${this.urlApi}/auth/cadastro`, req);
+  }
+
+  login(req: LoginRequest): Observable<TokenDto> {
+    return this.http.post<TokenDto>(`${this.urlApi}/auth/login`, req)
   }
 }
