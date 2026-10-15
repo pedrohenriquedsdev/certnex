@@ -1,4 +1,4 @@
-import { afterNextRender, Component, ElementRef, signal, viewChild } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import {
   email,
   form,
@@ -12,6 +12,7 @@ import {
 import { PaginaAutenticacao } from '../pagina-autenticacao';
 import { RouterLink } from '@angular/router';
 import { CadastroRequest } from '../auth.models';
+import { AuthService } from '../auth.service';
 
 interface CadastroFormModel {
   readonly nome: string;
@@ -26,6 +27,8 @@ interface CadastroFormModel {
   templateUrl: './cadastro.html',
 })
 export class Cadastro {
+  private authService = inject(AuthService);
+
   private readonly tituloPagina = viewChild<ElementRef<HTMLHeadingElement>>('tituloPagina');
 
   protected readonly modeloFormulario = signal<CadastroFormModel>({
@@ -80,6 +83,7 @@ export class Cadastro {
       confirmarSenha: this.modeloFormulario().confirmarSenha
     };
 
-    console.log(request);
+    // Enviar o forms -> Acessar a API -> Passar a request -> Pegar o retorno
+    this.authService.cadastrar(request).subscribe(response => console.log(response))
   }
 }

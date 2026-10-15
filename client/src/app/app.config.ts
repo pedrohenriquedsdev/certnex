@@ -13,6 +13,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: URL_API,
       useValue: environment.urlApi
-    }
+    },
   ]
 };
