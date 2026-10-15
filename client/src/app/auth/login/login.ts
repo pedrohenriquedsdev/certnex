@@ -57,11 +57,11 @@ export class Login {
       const modelo = this.modeloLogin();
 
     const requisicao: LoginRequest = {
-      email: modelo.email,
+      email: modelo.email.trim(),
       senha: modelo.senha,
     };
 
-      this.authService.login(requisicao).subscribe(() => {
+    this.authService.login(requisicao).subscribe(() => {
         void this.router.navigateByUrl('/');
       });
     }

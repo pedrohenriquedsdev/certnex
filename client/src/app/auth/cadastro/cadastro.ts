@@ -78,8 +78,8 @@ export class Cadastro {
     }
 
     const request: CadastroRequest = {
-      nome: this.modeloFormulario().nome,
-      email: this.modeloFormulario().email,
+      nome: this.modeloFormulario().nome.trim(),
+      email: this.modeloFormulario().email.trim(),
       senha: this.modeloFormulario().senha,
       confirmarSenha: this.modeloFormulario().confirmarSenha
     };

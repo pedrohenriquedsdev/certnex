@@ -21,6 +21,11 @@ export interface LoginRequest {
 
 export interface TokenDto {
   readonly usuarioId: string;
-  readonly acessToken: string;
+  readonly accessToken: string;
   readonly dataExpiracaoEmUtc: string;
+}
+
+export interface SessaoAutenticada {
+  readonly token: TokenDto;
+  readonly usuario: UsuarioDto;
 }
