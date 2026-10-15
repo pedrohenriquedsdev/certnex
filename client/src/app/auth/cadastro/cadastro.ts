@@ -11,7 +11,7 @@ import {
 } from '@angular/forms/signals';
 import { PaginaAutenticacao } from '../pagina-autenticacao';
 import { RouterLink } from '@angular/router';
-import { CadastroRequest } from '../models';
+import { CadastroRequest } from '../auth.models';
 
 interface CadastroFormModel {
   readonly nome: string;
