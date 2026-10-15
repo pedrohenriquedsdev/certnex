@@ -9,3 +9,7 @@ export interface UsuarioDto {
   readonly id: string;
   readonly email: string;
 }
+
+export interface CadastroConcluidoNavigationState {
+  readonly emailCadastrado?: string;
+}

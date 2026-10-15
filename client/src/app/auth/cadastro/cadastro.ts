@@ -10,8 +10,8 @@ import {
   validate,
 } from '@angular/forms/signals';
 import { PaginaAutenticacao } from '../pagina-autenticacao';
-import { RouterLink } from '@angular/router';
-import { CadastroRequest } from '../auth.models';
+import { Router, RouterLink } from '@angular/router';
+import { CadastroConcluidoNavigationState, CadastroRequest } from '../auth.models';
 import { AuthService } from '../auth.service';
 
 interface CadastroFormModel {
@@ -27,7 +27,8 @@ interface CadastroFormModel {
   templateUrl: './cadastro.html',
 })
 export class Cadastro {
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   private readonly tituloPagina = viewChild<ElementRef<HTMLHeadingElement>>('tituloPagina');
 
@@ -84,6 +85,12 @@ export class Cadastro {
     };
 
     // Enviar o forms -> Acessar a API -> Passar a request -> Pegar o retorno
-    this.authService.cadastrar(request).subscribe(response => console.log(response))
+    this.authService.cadastrar(request).subscribe((usuario) => {
+      const estadoNavegacao: CadastroConcluidoNavigationState = {
+        emailCadastrado: usuario.email
+      };
+
+      void this.router.navigateByUrl('/login', { state: estadoNavegacao })
+    });
   }
 }
