@@ -2,6 +2,12 @@
   <h1 #tituloPagina tabindex="-1" class="text-2xl font-semibold text-slate-900">Crie sua conta</h1>
   <p class="mt-2 text-sm text-slate-500">Comece a gerar certificados para seus alunos.</p>
 
+  @if (erroCadastro()) {
+    <p class="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-sm text-red-600">
+      {{ erroCadastro() }}
+    </p>
+  }
+
   <form class="mt-8 space-y-5" [formRoot]="formularioCadastro" (submit)="enviarFormulario($event)">
     <div>
       <label for="nome" class="block text-sm font-medium text-slate-700">Nome</label>

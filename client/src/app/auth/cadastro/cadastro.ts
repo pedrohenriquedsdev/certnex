@@ -1,4 +1,5 @@
 import { afterNextRender, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   email,
   form,
@@ -13,6 +14,7 @@ import { PaginaAutenticacao } from '../pagina-autenticacao';
 import { Router, RouterLink } from '@angular/router';
 import { CadastroConcluidoNavigationState, CadastroRequest } from '../auth.models';
 import { AuthService } from '../auth.service';
+import { obterMensagemErro } from '../auth-erros';
 
 interface CadastroFormModel {
   readonly nome: string;
@@ -31,6 +33,8 @@ export class Cadastro {
   private readonly router = inject(Router);
 
   private readonly tituloPagina = viewChild<ElementRef<HTMLHeadingElement>>('tituloPagina');
+
+  protected readonly erroCadastro = signal<string | null>(null);
 
   protected readonly modeloFormulario = signal<CadastroFormModel>({
     nome: '',
@@ -70,6 +74,8 @@ export class Cadastro {
   protected enviarFormulario(event: SubmitEvent): void {
     event.preventDefault();
 
+    this.erroCadastro.set(null);
+
     // Metadados de validação
     if (this.formularioCadastro().invalid()) {
       this.formularioCadastro().markAsTouched();
@@ -85,12 +91,17 @@ export class Cadastro {
     };
 
     // Enviar o forms -> Acessar a API -> Passar a request -> Pegar o retorno
-    this.authService.cadastrar(request).subscribe((usuario) => {
-      const estadoNavegacao: CadastroConcluidoNavigationState = {
-        emailCadastrado: usuario.email
-      };
+    this.authService.cadastrar(request).subscribe({
+      next: (usuario) => {
+        const estadoNavegacao: CadastroConcluidoNavigationState = {
+          emailCadastrado: usuario.email
+        };
 
-      void this.router.navigateByUrl('/login', { state: estadoNavegacao })
+        void this.router.navigateByUrl('/login', { state: estadoNavegacao });
+      },
+      error: (erro: HttpErrorResponse) => {
+        this.erroCadastro.set(obterMensagemErro(erro, 'Não foi possível concluir o cadastro.'));
+      },
     });
   }
 }
