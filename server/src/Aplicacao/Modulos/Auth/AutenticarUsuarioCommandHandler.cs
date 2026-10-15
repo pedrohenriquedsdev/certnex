@@ -21,9 +21,11 @@ public sealed class AutenticarUsuarioCommandHandler(
     {
         cancellationToken.ThrowIfCancellationRequested();
 
+        var email = command.Email?.Trim() ?? string.Empty;
+
         List<ErroValidacao> erros = [];
 
-        if (string.IsNullOrWhiteSpace(command.Email))
+        if (string.IsNullOrWhiteSpace(email))
             erros.Add(new("email", "Email é obrigatório."));
 
         if (string.IsNullOrWhiteSpace(command.Senha))
@@ -32,7 +34,7 @@ public sealed class AutenticarUsuarioCommandHandler(
         if (erros.Count > 0) return Result.Fail<TokenDto>(Erros.Validacao(erros));
 
         var usuario = await gerenciadorIdentidade.ChecarValidadeDeSenhaAsync(
-            command.Email,
+            email,
             command.Senha,
             cancellationToken);
 

@@ -18,9 +18,11 @@ public sealed class CadastrarUsuarioCommandHandler(
         CadastrarUsuarioCommand command,
         CancellationToken cancellationToken)
     {
+        var email = command.Email?.Trim() ?? string.Empty;
+
         var erros = new List<ErroValidacao>();
 
-        if (string.IsNullOrWhiteSpace(command.Email))
+        if (string.IsNullOrWhiteSpace(email))
             erros.Add(new("email", "Email é obrigatório."));
 
         if (string.IsNullOrWhiteSpace(command.Senha))
@@ -33,7 +35,7 @@ public sealed class CadastrarUsuarioCommandHandler(
         {
             return Result.Ok(await identidade.CadastrarAsync(
                 Guid.CreateVersion7(),
-                command.Email,
+                email,
                 command.Senha,
                 cancellationToken));
         }
