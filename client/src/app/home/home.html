@@ -1,46 +1,5 @@
 <div class="min-h-screen bg-white">
-  <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-sm">
-    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-      <div class="flex items-center gap-2.5">
-        <div
-          class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 text-sm font-bold text-slate-950"
-        >
-          cn
-        </div>
-        <span class="text-lg font-semibold tracking-tight text-slate-900">certnex</span>
-      </div>
-
-      <div class="hidden items-center gap-8 md:flex">
-        <a href="#recursos" class="text-sm font-medium text-slate-600 hover:text-slate-900">Recursos</a>
-        <a href="#como-funciona" class="text-sm font-medium text-slate-600 hover:text-slate-900">
-          Como funciona
-        </a>
-      </div>
-
-      <div class="flex items-center gap-3">
-        @if (sessaoAutenticada() === null) {
-          <a routerLink="/login" class="text-sm font-medium text-slate-600 hover:text-slate-900">Entrar</a>
-          <a
-            routerLink="/cadastro"
-            class="rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md hover:brightness-110"
-          >
-            Começar agora
-          </a>
-        } @else {
-          <span class="text-sm font-medium text-slate-600">
-            {{ sessaoAutenticada()?.usuario.email }}
-          </span>
-          <button
-            type="button"
-            (click)="authService.encerrarSessao()"
-            class="text-sm font-medium text-slate-600 hover:text-slate-900"
-          >
-            Sair
-          </button>
-        }
-      </div>
-    </nav>
-  </header>
+  <app-navbar />
 
   <section class="relative overflow-hidden">
     <div
