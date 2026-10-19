@@ -56,6 +56,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./cursos/detalhes/cursos-detalhes').then((m) => m.CursosDetalhes),
       },
+      {
+        // https://site.com/cursos/certificados/<id-do-curso>
+        path: 'certificados/:id',
+        loadComponent: () =>
+          import('./cursos/certificados/cursos-certificados').then((m) => m.CursosCertificados),
+      },
     ],
   },
 ];

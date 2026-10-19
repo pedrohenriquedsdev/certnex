@@ -1,0 +1,95 @@
+<div class="space-y-6">
+  <div>
+    <a routerLink="/cursos/listar" class="text-sm font-medium text-violet-600 hover:text-violet-500">
+      ← Voltar para cursos
+    </a>
+    <h1 class="mt-2 text-2xl font-semibold text-slate-900">Certificados do curso</h1>
+  </div>
+
+  @if (mensagemErro()) {
+    <p class="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-sm text-red-600">
+      {{ mensagemErro() }}
+    </p>
+  }
+
+  @if (carregando()) {
+    <div class="rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
+      Carregando...
+    </div>
+  } @else if (status() === null) {
+    <div class="max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+      <h2 class="text-lg font-semibold text-slate-900">Gerar certificados</h2>
+      <p class="mt-1 text-sm text-slate-600">Um nome de aluno por linha.</p>
+
+      <form class="mt-4 space-y-4" (submit)="solicitarGeracao($event)">
+        <textarea
+          #alunosTextarea
+          rows="8"
+          placeholder="Ana Silva&#10;Bruno Souza&#10;Carla Lima"
+          class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+        ></textarea>
+
+        <button
+          type="submit"
+          [disabled]="enviandoFormulario()"
+          [attr.aria-busy]="enviandoFormulario()"
+          class="w-full rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {{ enviandoFormulario() ? 'Enviando...' : 'Gerar certificados' }}
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-sm text-slate-500">Status do lote</p>
+          <p class="text-lg font-semibold text-slate-900">{{ status()?.status }}</p>
+        </div>
+
+        @if (status()?.zipDisponivel) {
+          <button
+            type="button"
+            (click)="baixarZip()"
+            class="inline-flex rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110"
+          >
+            Baixar ZIP
+          </button>
+        }
+      </div>
+
+      <dl class="mt-6 grid grid-cols-3 gap-4 text-center">
+        <div>
+          <dt class="text-xs text-slate-500">Total</dt>
+          <dd class="text-xl font-semibold text-slate-900">{{ status()?.totalCertificados }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-slate-500">Gerados</dt>
+          <dd class="text-xl font-semibold text-emerald-600">{{ status()?.gerados }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-slate-500">Falhas</dt>
+          <dd class="text-xl font-semibold text-red-600">{{ status()?.falhas }}</dd>
+        </div>
+      </dl>
+    </div>
+
+    @if (certificados().length > 0) {
+      <ul class="space-y-2">
+        @for (certificado of certificados(); track certificado.id) {
+          <li class="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3">
+            <span class="text-sm text-slate-900">{{ certificado.nomeAluno }}</span>
+            <span
+              class="text-xs font-medium"
+              [class.text-emerald-600]="certificado.statusGeracao === 'Gerado'"
+              [class.text-red-600]="certificado.statusGeracao === 'Falha'"
+              [class.text-slate-500]="certificado.statusGeracao === 'Pendente'"
+            >
+              {{ certificado.statusGeracao }}
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  }
+</div>
