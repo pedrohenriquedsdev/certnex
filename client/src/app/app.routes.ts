@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth/auth.guard';
 
 // Routes = lista de "URL -> o que mostrar". O Router lê isso para decidir
 // o que renderizar dentro do <router-outlet> de app.html.
@@ -27,6 +28,10 @@ export const routes: Routes = [
     // quem decide o que aparece dentro dele são as rotas filhas (children).
     path: 'cursos',
     loadComponent: () => import('./cursos/shell/cursos-shell').then((m) => m.CursosShell),
+    // canActivate roda ANTES do componente ser carregado. Como está no pai,
+    // vale pra qualquer rota filha (listar, cadastrar, detalhes...) — sem
+    // sessão, o Router nem chega a montar o CursosShell.
+    canActivate: [authGuard],
     children: [
       // path: '' = https://site.com/cursos (sem nada depois). pathMatch: 'full'
       // garante que só redireciona quando a URL termina exatamente aqui —
@@ -50,6 +55,12 @@ export const routes: Routes = [
         path: 'detalhes/:id',
         loadComponent: () =>
           import('./cursos/detalhes/cursos-detalhes').then((m) => m.CursosDetalhes),
+      },
+      {
+        // https://site.com/cursos/certificados/<id-do-curso>
+        path: 'certificados/:id',
+        loadComponent: () =>
+          import('./cursos/certificados/cursos-certificados').then((m) => m.CursosCertificados),
       },
     ],
   },

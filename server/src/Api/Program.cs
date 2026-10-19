@@ -23,6 +23,11 @@ builder.Services.AddCors(options => options.AddPolicy(corsPolicyCliente, policy 
         policy.WithOrigins(origensPermitidas);
 
     policy.AllowAnyHeader().AllowAnyMethod();
+
+    // Sem isso, o navegador recebe o header mas não deixa o JavaScript do
+    // client lê-lo (restrição padrão de CORS) — o download do ZIP perderia
+    // o nome do arquivo definido pelo servidor.
+    policy.WithExposedHeaders("Content-Disposition");
 }));
 
 var app = builder.Build();

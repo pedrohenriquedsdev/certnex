@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { obterMensagemErro } from '../../auth/auth-erros';
 import { CursoDto } from '../cursos.models';
 import { CursosService } from '../cursos.service';
 
 @Component({
+  imports: [RouterLink],
   selector: 'app-cursos-detalhes',
   templateUrl: './cursos-detalhes.html',
 })
@@ -14,20 +15,22 @@ export class CursosDetalhes {
   private readonly cursosService = inject(CursosService);
   private readonly rotaAtiva = inject(ActivatedRoute);
 
+  protected readonly cursoId: string | null;
+
   protected readonly curso = signal<CursoDto | null>(null);
   protected readonly carregando = signal(true);
   protected readonly mensagemErro = signal<string | null>(null);
 
   constructor() {
-    const id = this.rotaAtiva.snapshot.paramMap.get('id');
+    this.cursoId = this.rotaAtiva.snapshot.paramMap.get('id');
 
-    if (!id) {
+    if (!this.cursoId) {
       this.mensagemErro.set('Identificador do curso inválido.');
       this.carregando.set(false);
       return;
     }
 
-    this.cursosService.obterPorId(id).subscribe({
+    this.cursosService.obterPorId(this.cursoId).subscribe({
       next: (curso) => {
         this.curso.set(curso);
         this.carregando.set(false);
