@@ -1,0 +1,28 @@
+<div class="min-h-screen bg-slate-50">
+  <app-navbar />
+
+  <div class="mx-auto max-w-5xl px-6 py-8">
+    <nav class="flex gap-6 border-b border-slate-200 text-sm font-medium text-slate-600">
+      <a
+        routerLink="listar"
+        routerLinkActive="border-b-2 border-violet-600 pb-3 text-violet-600"
+        class="pb-3"
+      >
+        Meus cursos
+      </a>
+      <a
+        routerLink="cadastrar"
+        routerLinkActive="border-b-2 border-violet-600 pb-3 text-violet-600"
+        class="pb-3"
+      >
+        Novo curso
+      </a>
+    </nav>
+
+    <!-- router-outlet aninhado: renderiza só a subrota (listar/cadastrar),
+    sem recarregar a navbar nem o menu acima. -->
+    <div class="mt-8">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
