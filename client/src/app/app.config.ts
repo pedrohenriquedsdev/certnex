@@ -1,7 +1,8 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './auth/auth.interceptor';
 import { CHAVE_ARMAZENAMENTO_SESSAO, URL_API } from './auth/auth.tokens';
 import { environment } from '../environments/environment';
 
@@ -15,8 +16,9 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     // Ativa o Router com o mapa de rotas definido em app.routes.ts.
     provideRouter(routes),
-    // Ativa o HttpClient (usado pelo AuthService para chamar a API).
-    provideHttpClient(),
+    // Ativa o HttpClient e registra o authInterceptor: toda requisição passa
+    // por ele antes de ir pra rede, anexando o Bearer token quando há sessão.
+    provideHttpClient(withInterceptors([authInterceptor])),
     {
       // Registra o valor concreto para o InjectionToken URL_API (definido em
       // auth.tokens.ts). Quem pedir `inject(URL_API)` recebe environment.urlApi.
