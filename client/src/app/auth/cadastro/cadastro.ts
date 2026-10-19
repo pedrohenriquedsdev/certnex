@@ -35,6 +35,7 @@ export class Cadastro {
   private readonly tituloPagina = viewChild<ElementRef<HTMLHeadingElement>>('tituloPagina');
 
   protected readonly erroCadastro = signal<string | null>(null);
+  protected readonly enviandoFormulario = signal(false);
 
   protected readonly modeloFormulario = signal<CadastroFormModel>({
     nome: '',
@@ -90,6 +91,8 @@ export class Cadastro {
       confirmarSenha: this.modeloFormulario().confirmarSenha
     };
 
+    this.enviandoFormulario.set(true);
+
     // Enviar o forms -> Acessar a API -> Passar a request -> Pegar o retorno
     this.authService.cadastrar(request).subscribe({
       next: (usuario) => {
@@ -100,6 +103,7 @@ export class Cadastro {
         void this.router.navigateByUrl('/login', { state: estadoNavegacao });
       },
       error: (erro: HttpErrorResponse) => {
+        this.enviandoFormulario.set(false);
         this.erroCadastro.set(obterMensagemErro(erro, 'Não foi possível concluir o cadastro.'));
       },
     });

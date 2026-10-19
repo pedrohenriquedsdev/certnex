@@ -25,6 +25,8 @@ export class Login {
   private readonly tituloPagina = viewChild<ElementRef<HTMLHeadingElement>>('tituloPagina');
 
   protected readonly erroLogin = signal<string | null>(null);
+  protected readonly mensagemSucesso = signal<string | null>(null);
+  protected readonly enviandoFormulario = signal(false);
 
   protected readonly modeloLogin = signal<LoginFormModel>({ email: '', senha: '' });
   protected readonly formularioLogin = form(this.modeloLogin, (modelo) => {
@@ -45,6 +47,8 @@ export class Login {
         email: estadoNavegacao?.emailCadastrado ?? '',
         senha: original.senha,
       }));
+
+      this.mensagemSucesso.set('Conta criada com sucesso! Entre com seu e-mail e senha.');
     }
   }
 
@@ -67,11 +71,14 @@ export class Login {
       senha: modelo.senha,
     };
 
+    this.enviandoFormulario.set(true);
+
     this.authService.login(requisicao).subscribe({
       next: () => {
         void this.router.navigateByUrl('/');
       },
       error: (erro: HttpErrorResponse) => {
+        this.enviandoFormulario.set(false);
         this.erroLogin.set(obterMensagemErro(erro, 'Não foi possível entrar. Tente novamente.'));
       },
     });
