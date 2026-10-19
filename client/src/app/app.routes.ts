@@ -44,6 +44,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./cursos/cadastrar/cursos-cadastrar').then((m) => m.CursosCadastrar),
       },
+      {
+        // :id é um parâmetro de rota — https://site.com/cursos/detalhes/<qualquer-guid>
+        // cai aqui, e o componente lê o valor via ActivatedRoute.
+        path: 'detalhes/:id',
+        loadComponent: () =>
+          import('./cursos/detalhes/cursos-detalhes').then((m) => m.CursosDetalhes),
+      },
     ],
   },
 ];

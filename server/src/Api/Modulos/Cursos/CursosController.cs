@@ -12,6 +12,20 @@ namespace GeradorCertificadosOnline.Api.Modulos.Cursos;
 [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized, "application/problem+json")]
 public sealed class CursosController(IMediator mediator) : ControllerBase
 {
+    [HttpGet(Name = "ListarCursos")]
+    [Tags("Cursos")]
+    [EndpointSummary("Lista os cursos cadastrados")]
+    [EndpointDescription("Retorna todos os cursos cadastrados, ordenados por nome.")]
+    [ProducesResponseType<IReadOnlyList<CursoDto>>(200)]
+    public async Task<ActionResult<IReadOnlyList<CursoDto>>> Listar(CancellationToken cancellationToken)
+    {
+        var resultado = await mediator.Send(
+            new ListarCursosQuery(),
+            cancellationToken);
+
+        return Ok(resultado.Value);
+    }
+
     [HttpPost(Name = "CriarCurso")]
     [Tags("Cursos")]
     [EndpointSummary("Cadastra um curso")]
