@@ -22,4 +22,28 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./auth/login/login').then((m) => m.Login),
   },
+  {
+    // https://site.com/cursos/... — CursosShell é só o "molde" (navbar + menu);
+    // quem decide o que aparece dentro dele são as rotas filhas (children).
+    path: 'cursos',
+    loadComponent: () => import('./cursos/shell/cursos-shell').then((m) => m.CursosShell),
+    children: [
+      // path: '' = https://site.com/cursos (sem nada depois). pathMatch: 'full'
+      // garante que só redireciona quando a URL termina exatamente aqui —
+      // sem isso, '' combinaria com qualquer sub-caminho e nunca deixaria
+      // 'listar'/'cadastrar' serem alcançados.
+      { path: '', pathMatch: 'full', redirectTo: 'listar' },
+      {
+        // https://site.com/cursos/listar
+        path: 'listar',
+        loadComponent: () => import('./cursos/listar/cursos-listar').then((m) => m.CursosListar),
+      },
+      {
+        // https://site.com/cursos/cadastrar
+        path: 'cadastrar',
+        loadComponent: () =>
+          import('./cursos/cadastrar/cursos-cadastrar').then((m) => m.CursosCadastrar),
+      },
+    ],
+  },
 ];

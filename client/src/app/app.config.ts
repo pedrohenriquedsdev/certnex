@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { URL_API } from './auth/auth.tokens';
+import { CHAVE_ARMAZENAMENTO_SESSAO, URL_API } from './auth/auth.tokens';
 import { environment } from '../environments/environment';
 
 // ApplicationConfig substitui o antigo AppModule: é aqui que ficam registrados
@@ -24,6 +24,10 @@ export const appConfig: ApplicationConfig = {
       // no código do AuthService — só o arquivo de environment muda.
       provide: URL_API,
       useValue: environment.urlApi
+    },
+    {
+      provide: CHAVE_ARMAZENAMENTO_SESSAO,
+      useValue: 'certnex:sessao'
     },
   ]
 };

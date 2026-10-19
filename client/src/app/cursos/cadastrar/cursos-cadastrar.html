@@ -1,0 +1,62 @@
+<div class="max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+  <h2 class="text-lg font-semibold text-slate-900">Novo curso</h2>
+
+  <form class="mt-6 space-y-5" [formRoot]="formularioCurso" (submit)="enviarFormulario($event)">
+    <div>
+      <label for="nome" class="block text-sm font-medium text-slate-700">Nome do curso</label>
+      <input
+        id="nome"
+        type="text"
+        [formField]="formularioCurso.nome"
+        [attr.aria-invalid]="formularioCurso.nome().invalid()"
+        class="mt-1 w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+      />
+      @if (formularioCurso.nome().touched() && formularioCurso.nome().invalid()) {
+        <p class="mt-1.5 text-sm text-red-600">{{ formularioCurso.nome().errors()[0]?.message }}</p>
+      }
+    </div>
+
+    <div>
+      <label for="carga-horaria" class="block text-sm font-medium text-slate-700">
+        Carga horária (horas)
+      </label>
+      <input
+        id="carga-horaria"
+        type="number"
+        [formField]="formularioCurso.cargaHoraria"
+        [attr.aria-invalid]="formularioCurso.cargaHoraria().invalid()"
+        class="mt-1 w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+      />
+      @if (formularioCurso.cargaHoraria().touched() && formularioCurso.cargaHoraria().invalid()) {
+        <p class="mt-1.5 text-sm text-red-600">
+          {{ formularioCurso.cargaHoraria().errors()[0]?.message }}
+        </p>
+      }
+    </div>
+
+    <div>
+      <label for="data-conclusao" class="block text-sm font-medium text-slate-700">
+        Data de conclusão
+      </label>
+      <input
+        id="data-conclusao"
+        type="date"
+        [formField]="formularioCurso.dataConclusao"
+        [attr.aria-invalid]="formularioCurso.dataConclusao().invalid()"
+        class="mt-1 w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+      />
+      @if (formularioCurso.dataConclusao().touched() && formularioCurso.dataConclusao().invalid()) {
+        <p class="mt-1.5 text-sm text-red-600">
+          {{ formularioCurso.dataConclusao().errors()[0]?.message }}
+        </p>
+      }
+    </div>
+
+    <button
+      type="submit"
+      class="w-full rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110"
+    >
+      Cadastrar curso
+    </button>
+  </form>
+</div>

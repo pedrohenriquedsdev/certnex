@@ -118,9 +118,11 @@
 
     <button
       type="submit"
-      class="w-full rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110"
+      [disabled]="enviandoFormulario()"
+      [attr.aria-busy]="enviandoFormulario()"
+      class="w-full rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      Criar conta
+      {{ enviandoFormulario() ? 'Criando conta...' : 'Criar conta' }}
     </button>
   </form>
 

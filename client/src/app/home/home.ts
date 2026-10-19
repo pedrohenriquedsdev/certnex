@@ -1,14 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { Navbar } from '../shared/navbar/navbar';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, Navbar],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',
 })
-export class Home {
-  protected readonly authService = inject(AuthService);
-  protected readonly sessaoAutenticada = this.authService.sessao;
-}
+export class Home {}
