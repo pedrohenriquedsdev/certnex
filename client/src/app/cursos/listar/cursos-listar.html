@@ -1,12 +1,56 @@
-<div class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-  <h2 class="text-lg font-semibold text-slate-900">Nenhum curso cadastrado ainda</h2>
-  <p class="mt-2 text-sm text-slate-600">
-    Cadastre seu primeiro curso para começar a gerar certificados.
-  </p>
+<div class="flex items-center justify-between gap-4">
+  <div>
+    <p class="text-sm font-medium text-violet-600">Gestão da instituição</p>
+    <h1 class="text-2xl font-semibold text-slate-900">Cursos da instituição</h1>
+  </div>
   <a
-    routerLink="../cadastrar"
-    class="mt-6 inline-flex rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110"
+    routerLink="/cursos/cadastrar"
+    class="inline-flex rounded-lg bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110"
   >
     Cadastrar curso
   </a>
 </div>
+
+@if (mensagemErro()) {
+  <p class="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-sm text-red-600">
+    {{ mensagemErro() }}
+  </p>
+}
+
+@if (carregando()) {
+  <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
+    Carregando cursos...
+  </div>
+} @else if (cursos().length === 0) {
+  <div class="mt-6 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+    <h2 class="text-lg font-semibold text-slate-900">Nenhum curso cadastrado</h2>
+    <p class="mt-2 text-sm text-slate-600">
+      Cadastre seu primeiro curso para começar a gerar certificados.
+    </p>
+  </div>
+} @else {
+  <ul class="mt-6 space-y-3">
+    @for (curso of cursos(); track curso.id) {
+      <li>
+        <a
+          [routerLink]="['/cursos/detalhes', curso.id]"
+          class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-violet-300 hover:shadow-md"
+        >
+          <div class="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-violet-100 text-violet-600">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+              />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <p class="font-medium text-slate-900">{{ curso.nome }}</p>
+            <p class="text-sm text-slate-500">{{ curso.cargaHoraria }}h · {{ curso.dataConclusao }}</p>
+          </div>
+        </a>
+      </li>
+    }
+  </ul>
+}
