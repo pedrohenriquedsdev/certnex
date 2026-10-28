@@ -19,9 +19,6 @@ public class ProcessamentoCertificadosConfiguration : IEntityTypeConfiguration<P
             .HasConversion<string>()
             .HasMaxLength(30);
 
-        builder.Property(p => p.CaminhoZip)
-            .HasMaxLength(500);
-
         builder.HasOne(p => p.Curso)
             .WithMany(c => c.Processamentos)
             .HasForeignKey(p => p.CursoId)

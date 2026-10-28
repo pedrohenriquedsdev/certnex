@@ -15,9 +15,6 @@ public class CertificadoConfiguration : IEntityTypeConfiguration<Certificado>
             .HasConversion<string>()
             .HasMaxLength(30);
 
-        builder.Property(c => c.CaminhoArquivo)
-            .HasMaxLength(500);
-
         builder.HasOne(c => c.Processamento)
             .WithMany(p => p.Certificados)
             .HasForeignKey(c => c.ProcessamentoId)

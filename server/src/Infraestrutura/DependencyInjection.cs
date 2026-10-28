@@ -51,7 +51,7 @@ public static class DependencyInjection
         services.AddScoped<IGerenciadorIdentidade, GerenciadorDeIdentidade>();
 
         services.AddSingleton<ICertificadoPdfGenerator, CertificadoPdfGenerator>();
-        services.AddSingleton<ICertificadoStorage, FileSystemCertificadoStorage>();
+        services.AddSingleton<ICertificadoStorage, ZipCertificadoStorage>();
 
         services.AddScoped<IRepositorioCurso, RepositorioCursoEmOrm>();
         services.AddScoped<IRepositorioProcessamentoCertificados, RepositorioProcessamentoCertificadosEmOrm>();

@@ -25,7 +25,7 @@ public sealed record StatusProcessamentoDto(
             processamento.TotalCertificados,
             processamento.Gerados,
             processamento.Falhas,
-            processamento.CaminhoZip is not null,
+            processamento.ConteudoZip is not null,
             processamento.IniciadoEm,
             processamento.ConcluidoEm);
     }

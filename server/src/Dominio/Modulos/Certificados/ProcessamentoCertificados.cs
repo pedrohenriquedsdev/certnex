@@ -16,7 +16,7 @@ public sealed class ProcessamentoCertificados
 
     public Curso Curso { get; private set; } = null!;
     public List<Certificado> Certificados { get; private set; } = [];
-    public string? CaminhoZip { get; private set; }
+    public byte[]? ConteudoZip { get; private set; }
 
     public int TotalCertificados => Certificados.Count;
     public int Gerados => Certificados.Count(c => c.StatusGeracao == StatusGeracao.Gerado);
@@ -55,14 +55,14 @@ public sealed class ProcessamentoCertificados
     /// Registra o PDF de um certificado pendente. Retorna falso se o item já tiver resultado,
     /// permitindo que uma reentrega da mensagem seja idempotente.
     /// </summary>
-    public bool RegistrarSucesso(Guid certificadoId, string caminhoArquivo)
+    public bool RegistrarSucesso(Guid certificadoId, byte[] conteudoPdf)
     {
         var certificado = EncontrarPendente(certificadoId);
 
         if (certificado is null)
             return false;
 
-        certificado.RegistrarGeracao(caminhoArquivo);
+        certificado.RegistrarGeracao(conteudoPdf);
 
         return true;
     }
@@ -86,14 +86,17 @@ public sealed class ProcessamentoCertificados
     /// Registra o ZIP e fecha o lote como concluído ou concluído com falhas.
     /// Todos os certificados precisam ter resultado antes desta operação.
     /// </summary>
-    public void RegistrarZip(string caminhoZip)
+    public void RegistrarZip(byte[] conteudoZip)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(caminhoZip);
+        ArgumentNullException.ThrowIfNull(conteudoZip);
+
+        if (conteudoZip.Length == 0)
+            throw new ArgumentException("O conteúdo do ZIP não pode ser vazio.", nameof(conteudoZip));
 
         if (!TodosCertificadosProcessados)
             throw new InvalidOperationException("O processamento ainda possui certificados pendentes.");
 
-        CaminhoZip = caminhoZip;
+        ConteudoZip = conteudoZip;
         Status = Falhas > 0
             ? StatusProcessamento.ConcluidoComFalhas
             : StatusProcessamento.Concluido;

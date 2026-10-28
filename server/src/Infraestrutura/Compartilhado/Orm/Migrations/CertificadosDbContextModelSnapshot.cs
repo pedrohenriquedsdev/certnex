@@ -28,9 +28,8 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CaminhoArquivo")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                    b.Property<byte[]>("ConteudoPdf")
+                        .HasColumnType("bytea");
 
                     b.Property<DateTimeOffset?>("GeradoEm")
                         .HasColumnType("timestamp with time zone");
@@ -61,12 +60,11 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CaminhoZip")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
                     b.Property<DateTimeOffset?>("ConcluidoEm")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<byte[]>("ConteudoZip")
+                        .HasColumnType("bytea");
 
                     b.Property<Guid>("CursoId")
                         .HasColumnType("uuid");
