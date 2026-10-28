@@ -63,6 +63,9 @@ jobs:
         working-directory: server
         env:
           POSTGRES_CONNECTIONSTRING: ${{ secrets.POSTGRES_CONNECTIONSTRING }}
+          ConnectionStrings__Postgres: ${{ secrets.POSTGRES_CONNECTIONSTRING }}
+          ConnectionStrings__RabbitMq: ${{ secrets.RABBITMQ_CONNECTIONSTRING }}
+          Jwt__SigningKey: ${{ secrets.JWT_SIGNING_KEY }}
           NewRelic__LicenseKey: ${{ secrets.NEWRELIC_LICENSE_KEY }}
         run: |
           dotnet ef database update `
