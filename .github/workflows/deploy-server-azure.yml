@@ -103,6 +103,7 @@ jobs:
             --settings `
               "ConnectionStrings__Postgres=${{ secrets.POSTGRES_CONNECTIONSTRING }}" `
               "ConnectionStrings__RabbitMq=${{ secrets.RABBITMQ_CONNECTIONSTRING }}" `
+              "Cors__AllowedOrigins__0=https://jolly-flower-05873fe0f.3.azurestaticapps.net" `
               "Jwt__SigningKey=${{ secrets.JWT_SIGNING_KEY }}" `
               "NewRelic__LicenseKey=${{ secrets.NEWRELIC_LICENSE_KEY }}" `
               "LuckyPenny__LicenseKey=${{ secrets.LUCKYPENNY_LICENSE_KEY }}"
