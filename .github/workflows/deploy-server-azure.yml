@@ -52,19 +52,22 @@ jobs:
           dotnet-version: "10.x"
 
       - name: Restore dependencies
-        run: dotnet restore server/src/Api/GeradorCertificadosOnline.Api.csproj
+        working-directory: server
+        run: dotnet restore src/Api/GeradorCertificadosOnline.Api.csproj
 
       - name: Restore tools
-        run: dotnet tool restore --tool-manifest server/dotnet-tools.json
+        working-directory: server
+        run: dotnet tool restore
 
       - name: Apply ORM migrations to Neon (PostgreSQL)
+        working-directory: server
         env:
           POSTGRES_CONNECTIONSTRING: ${{ secrets.POSTGRES_CONNECTIONSTRING }}
           NewRelic__LicenseKey: ${{ secrets.NEWRELIC_LICENSE_KEY }}
         run: |
           dotnet ef database update `
-            --project server/src/Infraestrutura/GeradorCertificadosOnline.Infraestrutura.csproj `
-            --startup-project server/src/Api/GeradorCertificadosOnline.Api.csproj `
+            --project src/Infraestrutura/GeradorCertificadosOnline.Infraestrutura.csproj `
+            --startup-project src/Api/GeradorCertificadosOnline.Api.csproj `
             --configuration Release `
             --connection "$env:POSTGRES_CONNECTIONSTRING"
 
