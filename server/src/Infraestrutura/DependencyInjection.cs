@@ -25,12 +25,12 @@ public static class DependencyInjection
 
         services.AddDbContext<CertificadosDbContext>(options =>
         {
-            var connection = configuration.GetConnectionString("SqlServer");
+            var connection = configuration.GetConnectionString("Postgres");
 
             if (string.IsNullOrWhiteSpace(connection))
-                throw new InvalidOperationException("Connection string \"SqlServer\" não configurada.");
+                throw new InvalidOperationException("Connection string \"Postgres\" não configurada.");
 
-            options.UseSqlServer(connection, cfg => cfg.EnableRetryOnFailure(3));
+            options.UseNpgsql(connection, cfg => cfg.EnableRetryOnFailure(3));
         });
 
         services.AddIdentityCore<IdentityUser<Guid>>(options =>

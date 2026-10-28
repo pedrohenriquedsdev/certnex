@@ -1,8 +1,8 @@
 using GeradorCertificadosOnline.Dominio.Compartilhado;
 using GeradorCertificadosOnline.Dominio.Modulos.Certificados;
 using GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace GeradorCertificadosOnline.Infraestrutura.Modulos.Certificados;
 
@@ -33,7 +33,7 @@ public sealed class RepositorioProcessamentoCertificadosEmOrm(
         {
             await db.SaveChangesAsync(cancellationToken);
         }
-        catch (DbUpdateException ex) when (ex.InnerException is SqlException { Number: 2601 or 2627 })
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
         {
             throw new ConflitoDePersistenciaException("Curso já possui um processamento em andamento.", ex);
         }

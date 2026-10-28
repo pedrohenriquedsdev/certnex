@@ -13,7 +13,7 @@ public class ProcessamentoCertificadosConfiguration : IEntityTypeConfiguration<P
 
         builder.HasIndex(p => p.CursoId)
             .IsUnique()
-            .HasFilter("[Status] IN ('Pendente', 'GerandoCertificados')");
+            .HasFilter("\"Status\" IN ('Pendente', 'GerandoCertificados')");
 
         builder.Property(p => p.Status)
             .HasConversion<string>()

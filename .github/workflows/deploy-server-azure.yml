@@ -57,16 +57,16 @@ jobs:
       - name: Restore tools
         run: dotnet tool restore --tool-manifest server/dotnet-tools.json
 
-      - name: Apply ORM migrations to AzureSQL
+      - name: Apply ORM migrations to Neon (PostgreSQL)
         env:
-          SQLSERVER_CONNECTIONSTRING: ${{ secrets.SQLSERVER_CONNECTIONSTRING }}
+          POSTGRES_CONNECTIONSTRING: ${{ secrets.POSTGRES_CONNECTIONSTRING }}
           NewRelic__LicenseKey: ${{ secrets.NEWRELIC_LICENSE_KEY }}
         run: |
           dotnet ef database update `
             --project server/src/Infraestrutura/GeradorCertificadosOnline.Infraestrutura.csproj `
             --startup-project server/src/Api/GeradorCertificadosOnline.Api.csproj `
             --configuration Release `
-            --connection "$env:SQLSERVER_CONNECTIONSTRING"
+            --connection "$env:POSTGRES_CONNECTIONSTRING"
 
   deploy:
     runs-on: windows-latest
@@ -95,7 +95,7 @@ jobs:
             --resource-group "gerador-de-certificados-fullstack" `
             --name "gerador-de-certificados-fullstack" `
             --settings `
-              "ConnectionStrings__SqlServer=${{ secrets.SQLSERVER_CONNECTIONSTRING }}" `
+              "ConnectionStrings__Postgres=${{ secrets.POSTGRES_CONNECTIONSTRING }}" `
               "ConnectionStrings__RabbitMq=${{ secrets.RABBITMQ_CONNECTIONSTRING }}" `
               "Jwt__SigningKey=${{ secrets.JWT_SIGNING_KEY }}" `
               "NewRelic__LicenseKey=${{ secrets.NEWRELIC_LICENSE_KEY }}" `
