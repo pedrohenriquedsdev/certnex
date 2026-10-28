@@ -84,16 +84,16 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0AFC7130E6634153892379EEE8BE29B1 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EA604FD582F04340BD37CE5CA01C92B4 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_346DAC5A91A34EE4A6FA3C831624AC1E }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Configure Azure Web App settings
         shell: pwsh
         run: |
           az webapp config appsettings set `
-            --resource-group "gerador-de-certificados-fullstack" `
-            --name "gerador-de-certificados-fullstack" `
+            --resource-group "rg-gerador-certificados" `
+            --name "gerador-certificados-fullstack-app" `
             --settings `
               "ConnectionStrings__Postgres=${{ secrets.POSTGRES_CONNECTIONSTRING }}" `
               "ConnectionStrings__RabbitMq=${{ secrets.RABBITMQ_CONNECTIONSTRING }}" `
@@ -105,6 +105,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "gerador-de-certificados-fullstack"
+          app-name: "gerador-certificados-fullstack-app"
           slot-name: "Production"
           package: .
