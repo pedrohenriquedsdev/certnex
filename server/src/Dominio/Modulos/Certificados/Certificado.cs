@@ -10,7 +10,7 @@ public sealed class Certificado
     public string NomeAluno { get; private set; } = string.Empty;
     public StatusGeracao StatusGeracao { get; private set; } = StatusGeracao.Pendente;
 
-    public string? CaminhoArquivo { get; private set; }
+    public byte[]? ConteudoPdf { get; private set; }
     public DateTimeOffset? GeradoEm { get; private set; }
 
     public ProcessamentoCertificados Processamento { get; private set; } = null!;
@@ -44,12 +44,15 @@ public sealed class Certificado
         return erros;
     }
 
-    public void RegistrarGeracao(string caminhoArquivo)
+    public void RegistrarGeracao(byte[] conteudoPdf)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(caminhoArquivo);
+        ArgumentNullException.ThrowIfNull(conteudoPdf);
+
+        if (conteudoPdf.Length == 0)
+            throw new ArgumentException("O conteúdo do PDF não pode ser vazio.", nameof(conteudoPdf));
 
         StatusGeracao = StatusGeracao.Gerado;
-        CaminhoArquivo = caminhoArquivo;
+        ConteudoPdf = conteudoPdf;
         GeradoEm = DateTimeOffset.UtcNow;
     }
 

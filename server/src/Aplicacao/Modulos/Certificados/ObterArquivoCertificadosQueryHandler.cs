@@ -26,13 +26,13 @@ public sealed class ObterArquivoCertificadosQueryHandler(
         if (processamento is null)
             return Result.Fail(ErrosDeCertificado.ProcessamentoNaoEncontrado());
 
-        if (!processamento.EstaFinalizado || processamento.CaminhoZip is null)
+        if (!processamento.EstaFinalizado || processamento.ConteudoZip is null)
             return Result.Fail(ErrosDeCertificado.ZipIndisponivel());
 
         cancellationToken.ThrowIfCancellationRequested();
 
         return Result.Ok(new ArquivoCertificadosDto(
-            certificadoStorage.AbrirLeitura(processamento.CaminhoZip),
+            new MemoryStream(processamento.ConteudoZip),
             $"certificados-{query.CursoId}.zip",
             "application/zip")
         );

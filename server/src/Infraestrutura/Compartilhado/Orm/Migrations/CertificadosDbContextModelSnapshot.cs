@@ -3,8 +3,8 @@ using System;
 using GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,35 +18,34 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.12")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("GeradorCertificadosOnline.Dominio.Modulos.Certificados.Certificado", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("CaminhoArquivo")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<byte[]>("ConteudoPdf")
+                        .HasColumnType("bytea");
 
                     b.Property<DateTimeOffset?>("GeradoEm")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NomeAluno")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<Guid>("ProcessamentoId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("StatusGeracao")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
@@ -59,31 +58,30 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CaminhoZip")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset?>("ConcluidoEm")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<byte[]>("ConteudoZip")
+                        .HasColumnType("bytea");
 
                     b.Property<Guid>("CursoId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("IniciadoEm")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CursoId")
                         .IsUnique()
-                        .HasFilter("[Status] IN ('Pendente', 'GerandoCertificados')");
+                        .HasFilter("\"Status\" IN ('Pendente', 'GerandoCertificados')");
 
                     b.ToTable("ProcessamentosCertificados", (string)null);
                 });
@@ -92,13 +90,13 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("CargaHoraria")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CriadoEm")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateOnly>("DataConclusao")
                         .HasColumnType("date");
@@ -106,7 +104,7 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.HasKey("Id");
 
@@ -117,54 +115,54 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -173,8 +171,7 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -183,18 +180,18 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -206,16 +203,16 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -227,16 +224,16 @@ namespace GeradorCertificadosOnline.Infraestrutura.Compartilhado.Orm.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 

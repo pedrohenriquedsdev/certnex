@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
 
     var dbContext = scope.ServiceProvider.GetRequiredService<CertificadosDbContext>();
 
-    if (dbContext.Database.IsSqlServer())
+    if (dbContext.Database.IsNpgsql())
         dbContext.Database.Migrate();
 }
 

@@ -53,20 +53,14 @@ public sealed class GerarCertificadosConsumer(
             if (certificado.StatusGeracao != StatusGeracao.Pendente)
                 continue;
 
-            string caminhoArquivo;
+            byte[] conteudoPdf;
             try
             {
-                var pdf = geradorPdf.Gerar(
+                conteudoPdf = geradorPdf.Gerar(
                     certificado.NomeAluno,
                     processamento.Curso.Nome,
                     processamento.Curso.CargaHoraria,
                     processamento.Curso.DataConclusao);
-
-                caminhoArquivo = await certificadoStorage.SalvarAsync(
-                    processamento.CursoId,
-                    certificado.Id,
-                    pdf,
-                    cancellationToken);
             }
             catch (OperationCanceledException)
             {
@@ -86,25 +80,21 @@ public sealed class GerarCertificadosConsumer(
                 continue;
             }
 
-            processamento.RegistrarSucesso(certificado.Id, caminhoArquivo);
+            processamento.RegistrarSucesso(certificado.Id, conteudoPdf);
             await repositorioProcessamento.SalvarAsync(processamento, cancellationToken);
         }
 
-        if (!processamento.TodosCertificadosProcessados || processamento.CaminhoZip is not null)
+        if (!processamento.TodosCertificadosProcessados || processamento.ConteudoZip is not null)
             return;
 
-        var caminhosPdf = processamento.Certificados
+        var certificadosParaCompactar = processamento.Certificados
             .Where(c => c.StatusGeracao == StatusGeracao.Gerado)
-            .Select(c => c.CaminhoArquivo!)
+            .Select(c => (c.Id, ConteudoPdf: c.ConteudoPdf!))
             .ToList();
 
-        var caminhoZip = await certificadoStorage.CompactarAsync(
-            processamento.CursoId,
-            processamento.Id,
-            caminhosPdf,
-            cancellationToken);
+        var conteudoZip = certificadoStorage.Compactar(certificadosParaCompactar);
 
-        processamento.RegistrarZip(caminhoZip);
+        processamento.RegistrarZip(conteudoZip);
 
         await repositorioProcessamento.SalvarAsync(processamento, cancellationToken);
 

@@ -11,7 +11,7 @@ Projeto didático de arquitetura orientada a eventos (ASP.NET Core + RabbitMQ + 
 | `src/Api`                               | ASP.NET Core Web API  | Controllers, contratos HTTP, JWT, Problem Details e OpenAPI                     |
 | `src/Aplicacao`                         | Biblioteca de classes | Commands/queries e handlers MediatR, DTOs e resultados FluentResults            |
 | `src/Dominio`                           | Biblioteca de classes | Entidades, validações e contratos de persistência, autenticação e arquivos      |
-| `src/Infraestrutura`                    | Biblioteca de classes | SQL Server/EF Core, migrations, repositórios, filesystem e integrações externas |
+| `src/Infraestrutura`                    | Biblioteca de classes | PostgreSQL/EF Core (Npgsql), migrations, repositórios, filesystem e integrações externas |
 | `tests/GeradorCertificadosOnline.Tests` | Testes automatizados  | Integração HTTP, persistência relacional e consumers                            |
 
 O padrão de organização segue: módulos por funcionalidade, controllers enxutos, handlers, um consumer e um repositório agregado. A API compõe a Aplicação e a Infraestrutura via DI. O domínio não depende de EF Core/ASP.NET e a aplicação não depende da infraestrutura.
@@ -21,10 +21,10 @@ Os repositórios expõem operações dos casos de uso, em vez de um CRUD genéri
 ## Pré-requisitos
 
 - .NET SDK 10
-- Visual Studio com o SQL Server LocalDB (componente do instalador do Visual Studio)
+- Um banco PostgreSQL acessível para desenvolvimento (recomendado: uma branch gratuita no [Neon](https://neon.tech/))
 - Conta gratuita no [CloudAMQP](https://www.cloudamqp.com/)
 
-O ambiente não usa Docker: o banco roda no LocalDB e o RabbitMQ fica no CloudAMQP.
+O ambiente não usa Docker: o banco roda no Neon (PostgreSQL serverless gratuito) e o RabbitMQ fica no CloudAMQP.
 
 ## Configuração (uma vez por máquina)
 
@@ -34,10 +34,11 @@ O ambiente não usa Docker: o banco roda no LocalDB e o RabbitMQ fica no CloudAM
    dotnet tool restore
    ```
 
-2. Crie o banco no LocalDB aplicando as migrations:
+2. Configure a connection string do Postgres (branch do Neon) nos user-secrets e aplique as migrations:
 
    ```bash
-    dotnet ef database update --project src/Infraestrutura --startup-project src/Api
+   dotnet user-secrets set "ConnectionStrings:Postgres" "Host=...;Database=...;Username=...;Password=...;Ssl Mode=Require" --project src/Api
+   dotnet ef database update --project src/Infraestrutura --startup-project src/Api
    ```
 
 3. Configure a chave de assinatura do JWT nos user-secrets. Gere uma chave aleatória com pelo menos 32 caracteres:
@@ -66,7 +67,7 @@ dotnet run --project src/Api
 | ------------------- | ----------------------------------------------------------- |
 | Swagger UI          | http://localhost:5146/swagger                               |
 | RabbitMQ Management | Painel da instância no CloudAMQP                            |
-| SQL Server          | `(localdb)\MSSQLLocalDB`, banco `GeradorCertificadosOnline` |
+| PostgreSQL (Neon)   | branch configurada em `ConnectionStrings:Postgres` (user-secrets) |
 
 ## Autenticação
 
@@ -167,6 +168,6 @@ dotnet test GeradorCertificadosOnline.slnx
 dotnet format GeradorCertificadosOnline.slnx --verify-no-changes
 ```
 
-Os testes usam `WebApplicationFactory`, JWT real com configuração exclusiva de testes, SQLite relacional em memória e o Test Harness do MassTransit com transporte em memória. Cobrem validação, autorização, status HTTP, headers `Location`, mensagens enviadas, download, reinício de lote, falha individual e idempotência do agregado. Um teste compara o modelo SQL Server com o snapshot da migration sem se conectar a um servidor.
+Os testes usam `WebApplicationFactory`, JWT real com configuração exclusiva de testes, SQLite relacional em memória e o Test Harness do MassTransit com transporte em memória. Cobrem validação, autorização, status HTTP, headers `Location`, mensagens enviadas, download, reinício de lote, falha individual e idempotência do agregado. Um teste compara o modelo PostgreSQL com o snapshot da migration sem se conectar a um servidor.
 
-O teste do consumer executa a geração do lote, registro dos resultados e ZIP com filesystem temporário e substituto de PDF. A validação operacional de SQL Server, RabbitMQ e QuestPDF continua sendo feita com os serviços descritos acima e o arquivo `.http`.
+O teste do consumer executa a geração do lote, registro dos resultados e ZIP com filesystem temporário e substituto de PDF. A validação operacional de PostgreSQL, RabbitMQ e QuestPDF continua sendo feita com os serviços descritos acima e o arquivo `.http`.

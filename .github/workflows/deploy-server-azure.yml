@@ -26,10 +26,10 @@ jobs:
           dotnet-version: "10.x"
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build server/GeradorCertificadosOnline.slnx --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish server/src/Api/GeradorCertificadosOnline.Api.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -52,21 +52,27 @@ jobs:
           dotnet-version: "10.x"
 
       - name: Restore dependencies
-        run: dotnet restore server/src/Api/GeradorCertificadosOnline.Api.csproj
+        working-directory: server
+        run: dotnet restore src/Api/GeradorCertificadosOnline.Api.csproj
 
       - name: Restore tools
-        run: dotnet tool restore --tool-manifest server/dotnet-tools.json
+        working-directory: server
+        run: dotnet tool restore
 
-      - name: Apply ORM migrations to AzureSQL
+      - name: Apply ORM migrations to Neon (PostgreSQL)
+        working-directory: server
         env:
-          SQLSERVER_CONNECTIONSTRING: ${{ secrets.SQLSERVER_CONNECTIONSTRING }}
+          POSTGRES_CONNECTIONSTRING: ${{ secrets.POSTGRES_CONNECTIONSTRING }}
+          ConnectionStrings__Postgres: ${{ secrets.POSTGRES_CONNECTIONSTRING }}
+          ConnectionStrings__RabbitMq: ${{ secrets.RABBITMQ_CONNECTIONSTRING }}
+          Jwt__SigningKey: ${{ secrets.JWT_SIGNING_KEY }}
           NewRelic__LicenseKey: ${{ secrets.NEWRELIC_LICENSE_KEY }}
         run: |
           dotnet ef database update `
-            --project server/src/Infraestrutura/GeradorCertificadosOnline.Infraestrutura.csproj `
-            --startup-project server/src/Api/GeradorCertificadosOnline.Api.csproj `
+            --project src/Infraestrutura/GeradorCertificadosOnline.Infraestrutura.csproj `
+            --startup-project src/Api/GeradorCertificadosOnline.Api.csproj `
             --configuration Release `
-            --connection "$env:SQLSERVER_CONNECTIONSTRING"
+            --connection "$env:POSTGRES_CONNECTIONSTRING"
 
   deploy:
     runs-on: windows-latest
@@ -84,18 +90,18 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0AFC7130E6634153892379EEE8BE29B1 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EA604FD582F04340BD37CE5CA01C92B4 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_346DAC5A91A34EE4A6FA3C831624AC1E }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Configure Azure Web App settings
         shell: pwsh
         run: |
           az webapp config appsettings set `
-            --resource-group "gerador-de-certificados-fullstack" `
-            --name "gerador-de-certificados-fullstack" `
+            --resource-group "rg-gerador-certificados" `
+            --name "gerador-certificados-fullstack-app" `
             --settings `
-              "ConnectionStrings__SqlServer=${{ secrets.SQLSERVER_CONNECTIONSTRING }}" `
+              "ConnectionStrings__Postgres=${{ secrets.POSTGRES_CONNECTIONSTRING }}" `
               "ConnectionStrings__RabbitMq=${{ secrets.RABBITMQ_CONNECTIONSTRING }}" `
               "Jwt__SigningKey=${{ secrets.JWT_SIGNING_KEY }}" `
               "NewRelic__LicenseKey=${{ secrets.NEWRELIC_LICENSE_KEY }}" `
@@ -105,6 +111,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "gerador-de-certificados-fullstack"
+          app-name: "gerador-certificados-fullstack-app"
           slot-name: "Production"
           package: .

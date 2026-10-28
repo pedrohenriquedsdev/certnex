@@ -13,14 +13,11 @@ public class ProcessamentoCertificadosConfiguration : IEntityTypeConfiguration<P
 
         builder.HasIndex(p => p.CursoId)
             .IsUnique()
-            .HasFilter("[Status] IN ('Pendente', 'GerandoCertificados')");
+            .HasFilter("\"Status\" IN ('Pendente', 'GerandoCertificados')");
 
         builder.Property(p => p.Status)
             .HasConversion<string>()
             .HasMaxLength(30);
-
-        builder.Property(p => p.CaminhoZip)
-            .HasMaxLength(500);
 
         builder.HasOne(p => p.Curso)
             .WithMany(c => c.Processamentos)
